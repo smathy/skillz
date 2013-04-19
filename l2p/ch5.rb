@@ -1,12 +1,9 @@
 #!/usr/bin/env ruby
 
-print "What's your first name? "
-first_name = gets.chomp
+names = { first: nil, middle: nil, last: nil }
+names.each do |k, v|
+  print "What's your #{k} name? "
+  names[k] = gets.chomp
+end
 
-print "What's your middle name? "
-middle_name = gets.chomp
-
-print "What's your last name? "
-last_name = gets.chomp
-
-puts "Well hello there #{first_name} #{middle_name} #{last_name}"
+puts "Well hello there #{names.values.join ' '}"
