@@ -22,4 +22,13 @@ puts "My age in seconds is: #{(days_since_birth * SECONDS_PER_DAY).to_i}"
 SECONDS_PER_YEAR = SECONDS_PER_DAY * DAYS_PER_YEAR
 AUTHORS_AGE_IN_SECS = 1_025_000_000
 
-puts "Author's age: #{(AUTHORS_AGE_IN_SECS / SECONDS_PER_YEAR).to_i}"
+author_age = AUTHORS_AGE_IN_SECS / SECONDS_PER_YEAR
+years = author_age.to_i
+months = (( author_age - years ) * 12 ).to_i
+month_suffix =
+  if months == 0
+    ' exactly'
+  else
+    " and #{months} month" + ( months > 1 ? 's' : '' )
+  end
+puts "Author's age: #{years} years#{month_suffix}"
