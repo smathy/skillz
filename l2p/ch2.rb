@@ -18,3 +18,8 @@ require 'date'
 days_since_birth = DateTime.now - DateTime.parse( BIRTH_DATETIME)
 
 puts "My age in seconds is: #{(days_since_birth * SECONDS_PER_DAY).to_i}"
+
+SECONDS_PER_YEAR = SECONDS_PER_DAY * DAYS_PER_YEAR
+AUTHORS_AGE_IN_SECS = 1_025_000_000
+
+puts "Author's age: #{(AUTHORS_AGE_IN_SECS / SECONDS_PER_YEAR).to_i}"
