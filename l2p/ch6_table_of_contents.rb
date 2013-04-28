@@ -6,7 +6,7 @@ CHAPTERS = [
   { name: "Letters", page: 13 },
 ]
 
-WIDTH = `tput cols`.chomp.to_i - 50
+WIDTH = `tput cols`.to_i - 50
 
 puts "Table of Contnts".center(WIDTH)
 CHAPTERS.each_with_index do |e, i|
