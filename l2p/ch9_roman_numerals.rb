@@ -18,8 +18,8 @@ ROMANS = {
 
 def romanize i
   final = ''
-  ROMANS.keys.sort.reverse.each do |divisor|
-    final += ROMANS[divisor] * ( i / divisor )
+  ROMANS.sort.reverse.each do |divisor, roman|
+    final += roman * ( i / divisor )
     i %= divisor
   end
   final
