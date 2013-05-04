@@ -1,16 +1,17 @@
 #!/usr/bin/env ruby
 
+ACCEPTABLE = %w/yes no/
 
 def ask question
   while true
     puts question
     reply = gets.chomp.downcase
 
-    if reply == 'yes' || reply == 'no'
+    if ACCEPTABLE.include? reply
       return reply == 'yes'
     end
 
-    puts 'Please answer "yes" or "no".'
+    puts 'Please answer "' + ACCEPTABLE[0...-1].join('", "') + '" or "'+ ACCEPTABLE.last+  '".'
   end
 end
 
