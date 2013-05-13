@@ -30,7 +30,7 @@ def _recursive_sort unsorted, sorted
   if needle = unsorted.pop
     catch :next_unsorted do
       sorted.each_with_index do |e, i|
-        if e >= needle
+        if e.downcase >= needle.downcase
           sorted[i,0] = needle
           throw :next_unsorted
         end
