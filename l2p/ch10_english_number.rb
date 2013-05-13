@@ -1,79 +1,72 @@
 #!/usr/bin/env ruby
 
+class String
+  def present?
+    self && length > 0
+  end
+end
+
 def english_number number
-  if number < 0 # No negative numbers.
+  if number < 0
     return 'Please enter a number that isn\'t negative.'
   end
+
   if number == 0
     return 'zero'
   end
 
-  # No more special cases! No more returns!
-  #
-  num_string = '' # This is the string we will return.
+  num_string = ''
 
-  ones_place = ['one', 'two', 'three',
-    'four', 'five', 'six',
-    'seven', 'eight', 'nine' ]
-  tens_place = [ 'ten', 'twenty', 'thirty',
-    'forty', 'fifty', 'sixty',
-    'seventy', 'eighty', 'ninety' ]
+  lookup = { 0 => '' }
+  %w[ one two three four five six seven eight nine ten
+      eleven twelve thirteen fourteen fifteen sixteen seventeen
+      eighteen nineteen ].each_with_index do |e, i|
+    lookup[i+1] = e
+  end
 
-  teenagers = [ 'eleven', 'twelve', 'thirteen',
-    'fourteen', 'fifteen', 'sixteen',
-    'seventeen', 'eighteen', 'nineteen' ]
+  prefixes = {
+    20 => 'twenty',
+    30 => 'thirty',
+    40 => 'forty',
+    50 => 'fifty',
+    60 => 'sixty',
+    70 => 'seventy',
+    80 => 'eighty',
+    90 => 'ninety',
+  }
 
-  # "left" is how much of the number we still have left to write out
-  # "write" is the part we are writing out right now.
-  # write and left...get it? :)
-  left = number
-  write = left/100 # How many hundreds left?
-  left = left - write*100 # Subtract off those hundreds.
-  if write > 0
-    # Now here's the recursion:
-    hundreds = english_number write
-    num_string = num_string + hundreds + ' hundred'
+  suffixes = {
+    100 => 'hundred',
+    1_000 => 'thousand',
+    1_000_000 => 'million',
+    1_000_000_000 => 'billion',
+    1_000_000_000_000 => 'trillion',
+  }
 
-    if left > 0
-      # So we don't write 'two hundredfifty-one'...
-      num_string = num_string + ' '
+  suffixes.sort.reverse.each do |num, suffix|
+    if ( qsuffix = number / num ) > 0
+      num_string += " " if num_string.present?
+      num_string += english_number(qsuffix) + " #{suffix}"
+    end
+    number %= num
+  end
+
+  prefix_string = ''
+  prefixes.sort.reverse.each do |num, prefix|
+    if number >= num
+      prefix_string = prefix + " "
+      number %= num
     end
   end
 
-  write = left/10 # How many tens left?
-  left = left - write*10 # Subtract off those tens.
-
-  if write > 0
-    if ((write == 1) and (left > 0))
-      # Since we can't write "tenty-two" instead of "twelve", we have to make a
-      # special exception for these.
-      num_string = num_string + teenagers[left-1]
-      # The "-1" is because teenagers[3] is
-      # 'fourteen', not 'thirteen'.
-      # Since we took care of the digit in the
-      # ones place already, we have nothing left to write.
-      left = 0
-    else
-      num_string = num_string + tens_place[write-1]
-      # The "-1" is because tens_place[3] is
-      # 'forty', not 'thirty'.
+  if lookup[number]
+    if lookup[number].present? && num_string.present?
+      num_string += " and" 
     end
-
-    if left > 0
-      # So we don't write 'sixtyfour'...
-      num_string = num_string + '-'
-    end
+    num_string += " " + prefix_string + lookup[number]
   end
 
-  write = left # How many ones left to write out? left = 0 # Subtract off those ones.
-  if write > 0
-    num_string = num_string + ones_place[write-1]
-    # The "-1" is because ones_place[3] is
-    # 'four', not 'three'.
-  end
-
-  # Now we just return "num_string"...
-  num_string
+  num_string.strip
 end
 
 puts english_number( 0)
@@ -88,5 +81,6 @@ puts english_number(100)
 puts english_number(101)
 puts english_number(234)
 puts english_number(3211)
+puts english_number(17240)
 puts english_number(999999)
 puts english_number(1000000000000)
