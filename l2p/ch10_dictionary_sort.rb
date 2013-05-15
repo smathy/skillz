@@ -45,4 +45,20 @@ end
 
 puts
 puts "Sorted recursively..."
-puts "\t" + recursive_sort(arr).join(", ")
+puts "\t" + recursive_sort(arr.clone).join(", ")
+
+def bubble_sort arr, i=0
+  return arr if i+1 >= arr.length
+
+  a, b = arr[i,2]
+  if a <= b
+    bubble_sort arr, i+1
+  else
+    arr[i,2] = b, a
+    bubble_sort arr, ( i == 0 ? 1 : i-1 )
+  end
+end
+
+puts
+puts "Bubble sort..."
+puts "\t" + bubble_sort(arr).join(', ')
